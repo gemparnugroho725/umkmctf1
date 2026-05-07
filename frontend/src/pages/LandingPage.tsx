@@ -270,7 +270,7 @@ const LandingPage: React.FC = () => {
                         {/* Desktop Links */}
                         <div className="hidden md:flex items-center gap-8">
                             <a href="#tentang" className="text-sm font-semibold text-slate-600 hover:text-emerald-700 transition-colors">Tentang</a>
-                            <a href="#fitur" className="text-sm font-semibold text-slate-600 hover:text-emerald-700 transition-colors">Fitur Bento</a>
+                            <a href="#fitur" className="text-sm font-semibold text-slate-600 hover:text-emerald-700 transition-colors">Fitur Pintar</a>
                             <a href="#cara-kerja" className="text-sm font-semibold text-slate-600 hover:text-emerald-700 transition-colors">Cara Kerja</a>
                             <a href="#dampak" className="text-sm font-semibold text-slate-600 hover:text-emerald-700 transition-colors">Dampak Sosial</a>
                             <a href="#faq" className="text-sm font-semibold text-slate-600 hover:text-emerald-700 transition-colors">FAQ</a>
@@ -323,7 +323,7 @@ const LandingPage: React.FC = () => {
                     {mobileMenuOpen && (
                         <div className="md:hidden border-t border-slate-200/60 bg-[#F8FAF7] px-6 py-6 space-y-4 shadow-lg animate-[slideUp_0.3s_ease-out]">
                             <a href="#tentang" onClick={() => setMobileMenuOpen(false)} className="block text-base font-bold text-slate-700 hover:text-emerald-700">Tentang</a>
-                            <a href="#fitur" onClick={() => setMobileMenuOpen(false)} className="block text-base font-bold text-slate-700 hover:text-emerald-700">Fitur Bento</a>
+                            <a href="#fitur" onClick={() => setMobileMenuOpen(false)} className="block text-base font-bold text-slate-700 hover:text-emerald-700">Fitur Pintar</a>
                             <a href="#cara-kerja" onClick={() => setMobileMenuOpen(false)} className="block text-base font-bold text-slate-700 hover:text-emerald-700">Cara Kerja</a>
                             <a href="#dampak" onClick={() => setMobileMenuOpen(false)} className="block text-base font-bold text-slate-700 hover:text-emerald-700">Dampak Sosial</a>
                             <a href="#faq" onClick={() => setMobileMenuOpen(false)} className="block text-base font-bold text-slate-700 hover:text-emerald-700">FAQ</a>
