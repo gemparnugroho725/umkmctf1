@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
     TrendingUp, Truck, MessageSquare, ArrowRight, ShieldCheck, Zap, 
@@ -31,8 +31,10 @@ const BatikKawungPattern: React.FC<{ className?: string }> = ({ className = 'opa
     </svg>
 );
 
-// High-Fidelity REAL INTERACTIVE LEAFLET MAP OF INDONESIA
+// High-Fidelity REAL INTERACTIVE LEAFLET MAP OF INDONESIA (Memory-safe, React-compatible)
 const RealIndonesiaMap: React.FC = () => {
+    const mapContainerRef = useRef<HTMLDivElement>(null);
+
     useEffect(() => {
         // Load Leaflet CSS
         const link = document.createElement('link');
@@ -48,15 +50,19 @@ const RealIndonesiaMap: React.FC = () => {
 
         script.onload = () => {
             const L = (window as any).L;
-            if (!L) return;
+            if (!L || !mapContainerRef.current) return;
 
-            // Clear element if any map is already active to prevent double init error
-            const mapContainer = document.getElementById('leaflet-map');
-            if (!mapContainer) return;
-            mapContainer.innerHTML = ''; // Fresh clean slate
+            // Clear any old child divs inside the container ref to guarantee a fresh slate
+            mapContainerRef.current.innerHTML = '';
             
-            // Initialize leaflet map centering Indonesia's primary agricultural hub (Java)
-            mapInstance = L.map('leaflet-map', {
+            // Programmatically create a brand-new div for Leaflet to mount on
+            const mapDiv = document.createElement('div');
+            mapDiv.style.width = '100%';
+            mapDiv.style.height = '100%';
+            mapContainerRef.current.appendChild(mapDiv);
+            
+            // Initialize leaflet map by passing the ACTUAL brand-new DOM element reference
+            mapInstance = L.map(mapDiv, {
                 center: [-6.9, 110.3], // Centered at Central Java for detailed routes
                 zoom: 7, // Zoom level 7 is perfect to see regional hub coordinates
                 scrollWheelZoom: false,
@@ -142,7 +148,7 @@ const RealIndonesiaMap: React.FC = () => {
     return (
         <div className="w-full relative">
             <div 
-                id="leaflet-map" 
+                ref={mapContainerRef} 
                 className="w-full h-[400px] rounded-2xl border border-slate-200/80 shadow-md overflow-hidden relative z-10"
                 style={{ background: '#f8faf9' }}
             />
