@@ -265,7 +265,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
             variant_grade: (pData as any).variant_grade ?? null,
             variant_size: (pData as any).variant_size ?? null,
             variant_packaging: (pData as any).variant_packaging ?? null,
-            warehouse_id: (pData as any).warehouse_id ?? null
+            warehouse_id: (pData as any).warehouse_id ?? null,
+            moderation_status: 'approved' // Auto-approve on creation for seamless development/testing
         };
 
         const { error } = await supabase.from('items').insert([itemPayload]);
