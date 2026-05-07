@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
     TrendingUp, Truck, MessageSquare, ArrowRight, ShieldCheck, Zap, 
-    Activity, Users, CheckCircle, ChevronDown, Award, Globe, HelpCircle, 
-    MapPin, ChevronLeft, ChevronRight, Check, Star, ShieldAlert, ArrowUpRight
+    Activity, Users, CheckCircle, ChevronDown, Award, MapPin, 
+    ChevronLeft, ChevronRight, Check, Star, ShieldAlert
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import PromoBannersStrip from '../features/cms/components/PromoBannersStrip';
@@ -31,72 +31,126 @@ const BatikKawungPattern: React.FC<{ className?: string }> = ({ className = 'opa
     </svg>
 );
 
-// High-Fidelity Interactive Indonesian Logistics Node Map SVG
-const IndonesianLogisticsMap: React.FC = () => (
-    <svg viewBox="0 0 820 420" className="w-full h-full opacity-45 drop-shadow-[0_4px_12px_rgba(16,185,129,0.05)]" xmlns="http://www.w3.org/2000/svg">
-        {/* Curved animated logistics connections */}
-        <path d="M 150 180 Q 215 230 280 280" fill="none" stroke="#10b981" strokeWidth="1.5" strokeDasharray="6,6" className="animate-[dash_12s_linear_infinite]" />
-        <path d="M 320 150 Q 300 215 280 280" fill="none" stroke="#10b981" strokeWidth="1.5" strokeDasharray="6,6" className="animate-[dash_10s_linear_infinite]" />
-        <path d="M 440 160 Q 360 220 280 280" fill="none" stroke="#f59e0b" strokeWidth="1.5" strokeDasharray="6,6" className="animate-[dash_8s_linear_infinite]" />
-        <path d="M 440 160 Q 520 180 600 200" fill="none" stroke="#10b981" strokeWidth="1.5" strokeDasharray="6,6" className="animate-[dash_14s_linear_infinite]" />
-        <path d="M 320 150 Q 235 165 150 180" fill="none" stroke="#f59e0b" strokeWidth="1.5" strokeDasharray="6,6" className="animate-[dash_9s_linear_infinite]" />
+// High-Fidelity REAL INTERACTIVE LEAFLET MAP OF INDONESIA
+const RealIndonesiaMap: React.FC = () => {
+    useEffect(() => {
+        // Load Leaflet CSS
+        const link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
+        document.head.appendChild(link);
 
-        {/* Pulsing signal nodes along paths */}
-        <circle r="4" fill="#f59e0b">
-            <animateMotion dur="7s" repeatCount="indefinite" path="M 150 180 Q 215 230 280 280" />
-        </circle>
-        <circle r="4" fill="#10b981">
-            <animateMotion dur="5s" repeatCount="indefinite" path="M 440 160 Q 360 220 280 280" />
-        </circle>
-        <circle r="4" fill="#10b981">
-            <animateMotion dur="8s" repeatCount="indefinite" path="M 320 150 Q 300 215 280 280" />
-        </circle>
-        <circle r="4" fill="#f59e0b">
-            <animateMotion dur="6s" repeatCount="indefinite" path="M 320 150 Q 235 165 150 180" />
-        </circle>
+        // Load Leaflet JS
+        const script = document.createElement('script');
+        script.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+        
+        let mapInstance: any = null;
 
-        {/* SUMATERA */}
-        <g transform="translate(150, 180)" className="cursor-pointer group">
-            <circle r="12" fill="#10b981" className="opacity-20 group-hover:scale-150 transition-all duration-300" />
-            <circle r="12" fill="#10b981" className="opacity-10 animate-ping" />
-            <circle r="6" fill="#16a34a" />
-            <text y="-16" textAnchor="middle" fill="#475569" className="text-[10px] font-black tracking-wider uppercase font-sans">Sumatera</text>
-        </g>
+        script.onload = () => {
+            const L = (window as any).L;
+            if (!L) return;
 
-        {/* JAVA (Main Hub) */}
-        <g transform="translate(280, 280)" className="cursor-pointer group">
-            <circle r="18" fill="#10b981" className="opacity-25 group-hover:scale-150 transition-all duration-300" />
-            <circle r="18" fill="#10b981" className="opacity-15 animate-ping" />
-            <circle r="9" fill="#15803d" />
-            <circle r="4" fill="#f59e0b" />
-            <text y="24" textAnchor="middle" fill="#0f172a" className="text-[11px] font-black tracking-widest uppercase font-sans">Jawa (HQ Hub)</text>
-        </g>
+            // Clear element if any map is already active to prevent double init error
+            const mapContainer = document.getElementById('leaflet-map');
+            if (!mapContainer) return;
+            mapContainer.innerHTML = ''; // Fresh clean slate
+            
+            // Initialize leaflet map centering Indonesia's primary agricultural hub (Java)
+            mapInstance = L.map('leaflet-map', {
+                center: [-6.9, 110.3], // Centered at Central Java for detailed routes
+                zoom: 7, // Zoom level 7 is perfect to see regional hub coordinates
+                scrollWheelZoom: false,
+                attributionControl: false
+            });
 
-        {/* KALIMANTAN */}
-        <g transform="translate(320, 150)" className="cursor-pointer group">
-            <circle r="12" fill="#10b981" className="opacity-20 group-hover:scale-150 transition-all duration-300" />
-            <circle r="12" fill="#10b981" className="opacity-10 animate-ping" />
-            <circle r="6" fill="#16a34a" />
-            <text y="-16" textAnchor="middle" fill="#475569" className="text-[10px] font-black tracking-wider uppercase font-sans">Kalimantan</text>
-        </g>
+            // Modern ultra-premium white-tech SaaS tile layout (CartoDB Positron)
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+                maxZoom: 19
+            }).addTo(mapInstance);
 
-        {/* SULAWESI */}
-        <g transform="translate(440, 160)" className="cursor-pointer group">
-            <circle r="12" fill="#10b981" className="opacity-20 group-hover:scale-150 transition-all duration-300" />
-            <circle r="12" fill="#10b981" className="opacity-10 animate-ping" />
-            <circle r="6" fill="#16a34a" />
-            <text y="-16" textAnchor="middle" fill="#475569" className="text-[10px] font-black tracking-wider uppercase font-sans">Sulawesi</text>
-        </g>
+            const points = [
+                { name: 'Gapoktan Cabai Boyolali (Lahan Tani)', coords: [-7.5312, 110.5969], desc: 'Penyuplai cabai & hortikultura segar utama.' },
+                { name: 'Katering Pondok Rasa (Resto Jakarta)', coords: [-6.2088, 106.8456], desc: 'Pembeli B2B bahan baku sayuran segar.' },
+                { name: 'HQ Logistics Hub (Semarang)', coords: [-6.9667, 110.4167], desc: 'Pusat integrasi rute logistik dan pooling.' },
+                { name: 'Distributor Hub (Surabaya)', coords: [-7.2575, 112.7521], desc: 'Pusat logistik pengiriman Jawa Timur.' },
+                { name: 'Gapoktan Tomat Kopeng (Lahan Tani)', coords: [-7.3828, 110.4283], desc: 'Produsen sayur mayur organik lereng gunung.' },
+                { name: 'Mitra Restoran Solo (Katering)', coords: [-7.5755, 110.8243], desc: 'Konsumen komoditas harian terintegrasi.' }
+            ];
 
-        {/* PAPUA */}
-        <g transform="translate(600, 200)" className="cursor-pointer group">
-            <circle r="12" fill="#f59e0b" className="opacity-20 group-hover:scale-150 transition-all duration-300" />
-            <circle r="12" fill="#f59e0b" className="opacity-10 animate-ping" />
-            <circle r="6" fill="#f59e0b" />
-            <text y="-16" textAnchor="middle" fill="#475569" className="text-[10px] font-black tracking-wider uppercase font-sans">Papua</text>
-        </g>
-    </svg>
-);
+            // Custom Leaflet Markers (Green for farmers, gold for hubs/buyers)
+            const greenIcon = L.icon({
+                iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+                shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+                iconSize: [25, 41],
+                iconAnchor: [12, 41],
+                popupAnchor: [1, -34],
+                shadowSize: [41, 41]
+            });
+
+            const goldIcon = L.icon({
+                iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-gold.png',
+                shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+                iconSize: [25, 41],
+                iconAnchor: [12, 41],
+                popupAnchor: [1, -34],
+                shadowSize: [41, 41]
+            });
+
+            points.forEach((pt, idx) => {
+                const icon = idx % 2 === 0 ? greenIcon : goldIcon;
+                const marker = L.marker(pt.coords, { icon }).addTo(mapInstance);
+                marker.bindPopup(`
+                    <div style="font-family: sans-serif; padding: 4px; min-width: 170px;">
+                        <b style="color: #0f172a; font-size: 13px; display: block; margin-bottom: 2px;">${pt.name}</b>
+                        <p style="color: #475569; font-size: 11.5px; margin: 0 0 6px 0; line-height: 1.4;">${pt.desc}</p>
+                        <span style="display: inline-block; font-size: 9px; background: #ecfdf5; color: #047857; padding: 2.5px 8px; border-radius: 9999px; font-weight: bold; border: 1px solid #a7f3d0;">DirectRoute Connected</span>
+                    </div>
+                `);
+            });
+
+            // Drawing high-fidelity logistics routing polylines (Boyolali -> Semarang -> Jakarta)
+            const route1 = [
+                [-7.5312, 110.5969],
+                [-6.9667, 110.4167],
+                [-6.2088, 106.8456]
+            ];
+            L.polyline(route1, { color: '#16a34a', weight: 3, opacity: 0.85, dashArray: '6, 8' }).addTo(mapInstance);
+
+            // Routing 2 (Kopeng -> Solo -> Surabaya)
+            const route2 = [
+                [-7.3828, 110.4283],
+                [-7.5755, 110.8243],
+                [-7.2575, 112.7521]
+            ];
+            L.polyline(route2, { color: '#f59e0b', weight: 3, opacity: 0.85, dashArray: '6, 8' }).addTo(mapInstance);
+        };
+        document.head.appendChild(script);
+
+        return () => {
+            if (mapInstance) {
+                mapInstance.remove();
+            }
+            if (document.head.contains(link)) {
+                document.head.removeChild(link);
+            }
+            if (document.head.contains(script)) {
+                document.head.removeChild(script);
+            }
+        };
+    }, []);
+
+    return (
+        <div className="w-full relative">
+            <div 
+                id="leaflet-map" 
+                className="w-full h-[400px] rounded-2xl border border-slate-200/80 shadow-md overflow-hidden relative z-10"
+                style={{ background: '#f8faf9' }}
+            />
+            {/* Subtle premium card frame shadow overlay */}
+            <div className="absolute inset-0 pointer-events-none rounded-2xl border border-slate-200/50 shadow-inner z-20" />
+        </div>
+    );
+};
 
 // -------------------------------------------------------------
 // MAIN LANDING PAGE COMPONENT
@@ -657,7 +711,7 @@ const LandingPage: React.FC = () => {
                 </section>
 
                 {/* -------------------------------------------------------------
-                    6. INDONESIAN IMPACT (EMOTIONAL IMPACT MAP)
+                    6. INDONESIAN IMPACT (EMOTIONAL IMPACT MAP WITH REAL LEAFLET MAP)
                 ------------------------------------------------------------- */}
                 <section className="py-20 px-6 relative bg-white overflow-hidden" id="dampak">
                     {/* Tiny Batik Pattern Overlay */}
@@ -700,14 +754,15 @@ const LandingPage: React.FC = () => {
                                 </div>
                             </div>
 
-                            {/* Right Animated Interactive Logistics Node Map */}
+                            {/* Right Real Leaflet Maps Component */}
                             <div className="lg:col-span-7 bg-slate-50 rounded-3xl p-6 lg:p-8 border border-slate-100 shadow-inner relative flex flex-col items-center">
-                                <div className="absolute top-4 left-4 bg-white border border-slate-100 px-3 py-1 rounded-full text-[10px] font-black text-slate-500 uppercase tracking-widest">
-                                    Logistics Map Nusantara
+                                <div className="absolute top-8 left-8 bg-white border border-slate-200/80 px-4 py-1.5 rounded-full text-[10px] font-black text-slate-700 uppercase tracking-widest shadow-sm z-30 flex items-center gap-2">
+                                    <span className="w-2 h-2 bg-emerald-500 rounded-full animate-ping" />
+                                    <span>Live Interactive Maps</span>
                                 </div>
-                                <IndonesianLogisticsMap />
-                                <div className="mt-2 text-center text-xs font-bold text-slate-400">
-                                    Peta visual sebaran titik pasokan sayur & logistics hub cerdas Nusantara
+                                <RealIndonesiaMap />
+                                <div className="mt-4 text-center text-xs font-black text-slate-500">
+                                    Peta Real-time sebaran mitra petani hortikultura, rute distribusi optimal, & hub logistik Jawa Tengah.
                                 </div>
                             </div>
 
