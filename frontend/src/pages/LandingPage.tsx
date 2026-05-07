@@ -539,17 +539,17 @@ const LandingPage: React.FC = () => {
                                     <div className="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center mb-6 shadow-inner group-hover:bg-emerald-600 group-hover:text-white transition-all">
                                         <TrendingUp size={22} />
                                     </div>
-                                    <h4 className="text-xl font-black text-slate-900 mb-3 group-hover:text-emerald-700 transition-colors">Analisis Harga Pasar Real-time</h4>
+                                    <h4 className="text-xl font-black text-slate-900 mb-3 group-hover:text-emerald-700 transition-colors">AI Price Discovery</h4>
                                     <p className="text-sm text-slate-500 leading-relaxed max-w-md">
-                                        AI memantau fluktuasi harga komoditas pangan dari pasar induk regional secara real-time. Memperkirakan deviasi harga pasar ritel vs tengkulak guna menjamin harga jual transparan.
+                                        Mencari referensi harga secara real-time terintegrasi BPS dan PIHPS Bank Indonesia untuk menentukan <strong>Recommended Price</strong> yang adil serta memperkirakan margin keuntungan petani.
                                     </p>
                                 </div>
                                 
                                 {/* Micro Interactive Graphic - Chart Comparison */}
                                 <div className="mt-8 p-4 bg-slate-50 rounded-2xl border border-slate-100 flex items-end justify-between gap-2 aspect-[4/1]">
-                                    <div className="w-1/4 h-1/2 bg-slate-200 rounded-lg relative group-hover:bg-slate-300 transition-all"><span className="absolute -top-6 left-0 right-0 text-[10px] font-bold text-center text-slate-400">Tengkulak</span></div>
-                                    <div className="w-1/4 h-2/3 bg-slate-200 rounded-lg relative group-hover:bg-slate-300 transition-all"><span className="absolute -top-6 left-0 right-0 text-[10px] font-bold text-center text-slate-400">Pasar Ritel</span></div>
-                                    <div className="w-1/4 h-[95%] bg-gradient-to-t from-emerald-500 to-emerald-600 rounded-lg relative animate-pulse"><span className="absolute -top-6 left-0 right-0 text-[10px] font-extrabold text-center text-emerald-600">DirectRoute</span></div>
+                                    <div className="w-1/4 h-1/2 bg-slate-200 rounded-lg relative group-hover:bg-slate-300 transition-all"><span className="absolute -top-6 left-0 right-0 text-[10px] font-bold text-center text-slate-400">Est. Middleman</span></div>
+                                    <div className="w-1/4 h-2/3 bg-slate-200 rounded-lg relative group-hover:bg-slate-300 transition-all"><span className="absolute -top-6 left-0 right-0 text-[10px] font-bold text-center text-slate-400">Market Retail</span></div>
+                                    <div className="w-1/4 h-[95%] bg-gradient-to-t from-emerald-500 to-emerald-600 rounded-lg relative animate-pulse"><span className="absolute -top-6 left-0 right-0 text-[10px] font-extrabold text-center text-emerald-600">AI Discover</span></div>
                                 </div>
                             </div>
 
@@ -559,9 +559,9 @@ const LandingPage: React.FC = () => {
                                     <div className="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center mb-6 shadow-inner group-hover:bg-emerald-600 group-hover:text-white transition-all">
                                         <Truck size={22} />
                                     </div>
-                                    <h4 className="text-xl font-black text-slate-900 mb-3 group-hover:text-emerald-700 transition-colors">Pooling Logistik Cerdas</h4>
+                                    <h4 className="text-xl font-black text-slate-900 mb-3 group-hover:text-emerald-700 transition-colors">Logistics Route Orchestrator</h4>
                                     <p className="text-sm text-slate-500 leading-relaxed">
-                                        Algoritma khusus menggabungkan muatan sayur/panen dari beberapa petani terdekat yang searah untuk diantar satu truk bersama. Memotong biaya kirim hingga 30%.
+                                        Algoritma Traveling Salesperson Problem (TSP) mengoptimalkan rute multi-buyer dan pooling muatan di bawah kapasitas 500kg untuk menghemat pengiriman hingga 30%.
                                     </p>
                                 </div>
                                 
@@ -574,7 +574,7 @@ const LandingPage: React.FC = () => {
                                     <div className="relative h-6 bg-slate-200 rounded-full overflow-hidden flex items-center px-2">
                                         <div className="absolute left-0 top-0 h-full bg-emerald-100 w-[70%] transition-all" />
                                         <Truck size={14} className="text-emerald-600 relative z-10 animate-[float_4s_ease-in-out_infinite]" />
-                                        <span className="text-[9px] font-extrabold text-emerald-700 relative z-10 ml-auto">Kapasitas Truk: 70%</span>
+                                        <span className="text-[9px] font-extrabold text-emerald-700 relative z-10 ml-auto">Logistics Pooling: 70%</span>
                                     </div>
                                 </div>
                             </div>
@@ -585,9 +585,9 @@ const LandingPage: React.FC = () => {
                                     <div className="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center mb-6 shadow-inner group-hover:bg-emerald-600 group-hover:text-white transition-all">
                                         <MessageSquare size={22} />
                                     </div>
-                                    <h4 className="text-xl font-black text-slate-900 mb-3 group-hover:text-emerald-700 transition-colors">AI Outreach Satu Klik</h4>
+                                    <h4 className="text-xl font-black text-slate-900 mb-3 group-hover:text-emerald-700 transition-colors">Dynamic Outreach AI</h4>
                                     <p className="text-sm text-slate-500 leading-relaxed">
-                                        Menghemat waktu Anda. AI menyusun penulisan draf penawaran kerja sama persentase harga diskon untuk mitra restoran, kemudian mengirimkannya via WhatsApp dalam satu klik saja.
+                                        Memformulasikan draf pesan promosi otomatis tertarget (formal untuk korporasi/hotel, kasual untuk katering/UMKM) dan mengirimkannya langsung via WhatsApp.
                                     </p>
                                 </div>
                                 
@@ -595,7 +595,7 @@ const LandingPage: React.FC = () => {
                                 <div className="mt-8 bg-slate-50 p-3 rounded-2xl border border-slate-100 space-y-2">
                                     <div className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest">WhatsApp Auto-Draf AI</div>
                                     <div className="bg-white p-2.5 rounded-xl border border-slate-100 text-[11px] font-semibold text-slate-700">
-                                        "Halo Resto Segar, berikut pasokan cabai segar Gapoktan Boyolali..."
+                                        "Target: Korporasi/Hotel | Target: Katering/UMKM"
                                     </div>
                                 </div>
                             </div>
@@ -607,9 +607,9 @@ const LandingPage: React.FC = () => {
                                     <div className="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center mb-6 shadow-inner group-hover:bg-emerald-600 group-hover:text-white transition-all">
                                         <ShieldCheck size={22} />
                                     </div>
-                                    <h4 className="text-xl font-black text-slate-900 mb-3 group-hover:text-emerald-700 transition-colors">Deteksi Fraud Transaksi AI</h4>
+                                    <h4 className="text-xl font-black text-slate-900 mb-3 group-hover:text-emerald-700 transition-colors">Trust & Safety Dashboard</h4>
                                     <p className="text-sm text-slate-500 leading-relaxed max-w-md">
-                                        Sistem kami mendeteksi dini jika ada transaksi palsu atau pola manipulasi pengiriman oleh perantara gelap. Melindungi kredibilitas dan keamanan finansial petani.
+                                        Melindungi sengketa transaksi lewat <strong>Dispute Center</strong>, verifikasi berkas seller, pencegah spam chat, deteksi kegagalan data via <strong>Anomaly Dashboard</strong>, dan audit log RLS.
                                     </p>
                                 </div>
                                 
@@ -617,10 +617,10 @@ const LandingPage: React.FC = () => {
                                 <div className="mt-8 p-3 bg-slate-50 rounded-2xl border border-slate-100 flex items-center justify-between">
                                     <div className="flex items-center gap-2">
                                         <div className="w-2 h-2 bg-emerald-500 rounded-full animate-ping" />
-                                        <span className="text-xs font-black text-slate-700">Transaksi Cabai Super: ID #0192</span>
+                                        <span className="text-xs font-black text-slate-700">Audit Logs & Dispute Center</span>
                                     </div>
                                     <span className="text-[10px] font-black text-emerald-700 bg-emerald-50 border border-emerald-100 px-3 py-1 rounded-full flex items-center gap-1">
-                                        <CheckCircle size={10} /> Verified Secure
+                                        <CheckCircle size={10} /> Verified RLS Secure
                                     </span>
                                 </div>
                             </div>
