@@ -522,7 +522,7 @@ const LandingPage: React.FC = () => {
                                 Alur Kerja Agentic AI
                             </div>
                             <h2 className="text-4xl lg:text-5xl font-extrabold tracking-tight text-slate-900 leading-tight">
-                                Fitur Pintar <span className="bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">Bento Box AI</span>
+                                Fitur Pintar <span className="bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">DirectRoute AI</span>
                             </h2>
                             <p className="text-slate-500 font-medium text-lg">
                                 Dirancang khusus untuk memodernisasi rantai pasok dengan kepintaran teknologi AI terbaru.
