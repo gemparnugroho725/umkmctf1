@@ -1,12 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
-    TrendingUp, Truck, MessageSquare, ArrowRight, ShieldCheck, Zap, 
+    TrendingUp, Truck, MessageSquare, ArrowRight, ShieldCheck, 
     Activity, Users, CheckCircle, ChevronDown, Award, MapPin, 
     ChevronLeft, ChevronRight, Check, Star, ShieldAlert, HelpCircle
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
-import PromoBannersStrip from '../features/cms/components/PromoBannersStrip';
 
 // -------------------------------------------------------------
 // SUB-COMPONENTS
