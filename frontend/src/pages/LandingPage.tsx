@@ -421,9 +421,9 @@ const LandingPage: React.FC = () => {
                             <div className="bg-white border-2 border-slate-100 p-4 lg:p-5 rounded-[2.5rem] shadow-2xl shadow-slate-200 relative z-10 w-full max-w-md hover:scale-[1.01] transition-transform duration-500">
                                 <div className="bg-slate-50 border border-slate-100 rounded-[1.8rem] overflow-hidden aspect-[16/11] relative">
                                     <img
-                                        src="/dashboard_preview.png"
+                                        src="/hero_supply_chain.png"
                                         alt="Platform Preview"
-                                        className="w-full h-full object-cover"
+                                        className="w-full h-full object-contain bg-white"
                                     />
                                     {/* Scanning Overlay Effect */}
                                     <div className="absolute inset-x-0 h-[3px] bg-gradient-to-r from-transparent via-emerald-500 to-transparent top-0 animate-[shimmer_3s_infinite_linear]" />
