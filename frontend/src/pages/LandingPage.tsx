@@ -399,7 +399,7 @@ const LandingPage: React.FC = () => {
                                     onClick={() => navigate('/buyer-marketplace')}
                                     className="px-8 py-4 bg-white/80 backdrop-blur-md border border-slate-200 hover:bg-slate-50 text-slate-800 rounded-2xl font-black flex items-center justify-center gap-2 transition-all hover:scale-[1.01] shadow-sm cursor-pointer"
                                 >
-                                    Jelajahi Demo Marketplace
+                                    Jelajahi Marketplace
                                 </button>
                             </div>
 
@@ -422,12 +422,9 @@ const LandingPage: React.FC = () => {
                             <div className="bg-white border-2 border-slate-100 p-4 lg:p-5 rounded-[2.5rem] shadow-2xl shadow-slate-200 relative z-10 w-full max-w-md hover:scale-[1.01] transition-transform duration-500">
                                 <div className="bg-slate-50 border border-slate-100 rounded-[1.8rem] overflow-hidden aspect-[16/11] relative">
                                     <img
-                                        src="https://rricoid-assets.obs.ap-southeast-4.myhuaweicloud.com/berita/Media-Fake-Digital.gif"
+                                        src="/dashboard_preview.png"
                                         alt="Platform Preview"
                                         className="w-full h-full object-cover"
-                                        onError={(e) => {
-                                            e.currentTarget.src = "/logo.jpg";
-                                        }}
                                     />
                                     {/* Scanning Overlay Effect */}
                                     <div className="absolute inset-x-0 h-[3px] bg-gradient-to-r from-transparent via-emerald-500 to-transparent top-0 animate-[shimmer_3s_infinite_linear]" />
@@ -1016,7 +1013,7 @@ const LandingPage: React.FC = () => {
                                 onClick={() => navigate('/login')}
                                 className="w-full sm:w-auto px-8 py-4 bg-white text-emerald-950 hover:bg-slate-50 rounded-2xl font-black text-base shadow-xl shadow-black/10 transition-transform hover:scale-[1.01]"
                             >
-                                Coba Demo Dashboard
+                                Masuk / Daftar Sekarang
                             </button>
                             <button
                                 onClick={() => navigate('/buyer-marketplace')}
