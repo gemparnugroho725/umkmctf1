@@ -1,0 +1,24 @@
+# Dependencies
+**/node_modules/
+**/dist/
+**/dist-ssr/
+
+# Environment files
+**/.env
+**/.env.*
+!**/.env.example
+
+# Databases
+**/database.sqlite
+**/*.db
+**/*.sqlite
+
+# Logs and system files
+**/logs/
+**/*.log
+**/.server.pid
+**/.DS_Store
+**/.vscode/
+**/.idea/
+**/.antigravity*
+_push_tmp/
