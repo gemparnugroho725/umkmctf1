@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { 
     TrendingUp, Truck, MessageSquare, ArrowRight, ShieldCheck, Zap, 
     Activity, Users, CheckCircle, ChevronDown, Award, MapPin, 
-    ChevronLeft, ChevronRight, Check, Star, ShieldAlert
+    ChevronLeft, ChevronRight, Check, Star, ShieldAlert, HelpCircle
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import PromoBannersStrip from '../features/cms/components/PromoBannersStrip';
