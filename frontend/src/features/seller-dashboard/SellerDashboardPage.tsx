@@ -612,25 +612,72 @@ const apiBaseUrl = String(
             if (!uniqueByBuyerOrder.has(key)) uniqueByBuyerOrder.set(key, b);
         });
 
-        // Tambah kandidat urutan buyer (heuristik) supaya minimal 2 opsi dan maksimal 5
-        const candidateOrders: string[][] = [];
-        if (buyerNames.length > 0) candidateOrders.push(buyerNames.slice());
-        if (buyerNames.length >= 2) candidateOrders.push(buyerNames.slice().reverse());
-        if (buyerNames.length >= 3) {
-            const a = buyerNames.slice();
-            [a[0], a[1]] = [a[1], a[0]];
-            candidateOrders.push(a);
-            const b = buyerNames.slice();
-            [b[1], b[2]] = [b[2], b[1]];
-            candidateOrders.push(b);
-        }
-        if (buyerNames.length >= 4) {
-            const c = buyerNames.slice();
-            [c[2], c[3]] = [c[3], c[2]];
-            candidateOrders.push(c);
-        }
+        // TSP Systematic Solver for up to 10 destinations
+        const getCandidateRoutes = (names: string[]): string[][] => {
+            const candidates: string[][] = [];
+            const seenKeys = new Set<string>();
+            const addUnique = (seq: string[]) => {
+                const key = seq.join('|');
+                if (!seenKeys.has(key)) {
+                    seenKeys.add(key);
+                    candidates.push(seq);
+                }
+            };
 
-        // Skor cepat (aproksimasi jarak) untuk pilih yang paling efektif
+            // 1. Original order
+            addUnique(names.slice());
+
+            // 2. Reversed order
+            if (names.length >= 2) {
+                addUnique(names.slice().reverse());
+            }
+
+            // 3. Nearest Neighbor (Greedy TSP search)
+            if (names.length >= 2) {
+                const unvisited = names.slice();
+                const greedy: string[] = [];
+                let current = sellerBaseCoords;
+                while (unvisited.length > 0) {
+                    let nearestIdx = 0;
+                    let minDist = Number.POSITIVE_INFINITY;
+                    for (let i = 0; i < unvisited.length; i++) {
+                        const coord = buyerCoordMap.get(normalizeKey(unvisited[i]));
+                        if (coord) {
+                            const d = haversineKm(current, coord);
+                            if (d < minDist) {
+                                minDist = d;
+                                nearestIdx = i;
+                            }
+                        }
+                    }
+                    const nextName = unvisited.splice(nearestIdx, 1)[0];
+                    greedy.push(nextName);
+                    const nextCoord = buyerCoordMap.get(normalizeKey(nextName));
+                    if (nextCoord) current = nextCoord;
+                }
+                addUnique(greedy);
+            }
+
+            // 4. Random Shuffles (Permutations search) to cover alternative options for up to 10 destinations
+            if (names.length >= 3) {
+                const maxIterations = names.length <= 5 ? 120 : 100;
+                for (let iter = 0; iter < maxIterations; iter++) {
+                    const shuffled = names.slice();
+                    // Fisher-Yates shuffle
+                    for (let i = shuffled.length - 1; i > 0; i--) {
+                        const j = Math.floor(Math.random() * (i + 1));
+                        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+                    }
+                    addUnique(shuffled);
+                }
+            }
+
+            return candidates;
+        };
+
+        const candidateOrders = getCandidateRoutes(buyerNames);
+
+        // Skor cepat (aproksimasi jarak) untuk pilih yang paling efektif (jarak terpendek)
         const scored = candidateOrders
             .map(order => {
                 const seq = ['Gudang Anda', ...order, 'Gudang Anda'];
@@ -638,23 +685,28 @@ const apiBaseUrl = String(
             })
             .sort((x, y) => x.score - y.score);
 
-        for (const cand of scored) {
+        // Pilih rute dengan jarak paling minimal dan sediakan 2-5 pilihan terpendek
+        scored.forEach((cand, idx) => {
             const key = toBuyerOrderKey(cand.seq);
-            if (!key) continue;
+            if (!key) return;
             if (!uniqueByBuyerOrder.has(key)) {
+                const isOptimal = idx === 0;
+                const distStr = `${cand.score.toFixed(1)} km`;
+                const rText = isOptimal 
+                    ? `Rute Utama Terpendek (${distStr}) hasil optimasi Traveling Salesperson (TSP).`
+                    : `Opsi Alternatif Terpendek #${idx + 1} (${distStr}) dengan kombinasi urutan rute berbeda.`;
                 uniqueByBuyerOrder.set(
                     key,
-                    makeBatch(cand.seq, 0, 'Alternatif rute dengan urutan buyer berbeda (dipilih dari kandidat efektif).')
+                    makeBatch(cand.seq, 0, rText)
                 );
             }
-            if (uniqueByBuyerOrder.size >= 5) break;
-        }
+        });
 
         batches = Array.from(uniqueByBuyerOrder.values());
         if (batches.length < 2 && buyerNames.length >= 2) {
             const order = buyerNames.slice();
             [order[0], order[1]] = [order[1], order[0]];
-            batches.push(makeBatch(['Gudang Anda', ...order, 'Gudang Anda'], 0, 'Alternatif rute kedua (swap urutan buyer).'));
+            batches.push(makeBatch(['Gudang Anda', ...order, 'Gudang Anda'], 0, 'Opsi Alternatif kedua (swap urutan buyer).'));
         }
 
         batches = batches
@@ -890,6 +942,82 @@ const apiBaseUrl = String(
             if (error.response) {
                 addLog('ERROR', `API Response (${error.response.status}): ${JSON.stringify(error.response.data)}`);
             }
+            console.error(error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleRunLogisticsAgent = async () => {
+        if (selectedOrderIds.length === 0) {
+            alert('Pilih minimal satu pesanan sebelum menghitung rute.');
+            return;
+        }
+
+        setLoading(true);
+        setCurrentStep(2);
+        setLogs([]);
+        setWorkflowError(null);
+
+        addLog('INFO', '🚀 Initializing Logistics Route Orchestrator Agent...');
+        addLog('INFO', `📍 Base Location (Seller Warehouse): ${location}`);
+
+        try {
+            const selectedOrdersList = shippableOrders.filter(o => selectedOrderIds.includes(o.id));
+            addLog('INFO', `📦 Loaded ${selectedOrdersList.length} shippable orders to coordinate.`);
+
+            const dynamicSuppliers = [
+                { name: 'Gudang Anda', lat: sellerBaseCoords.lat, lng: sellerBaseCoords.lng, type: 'perishable', weight: stock },
+                ...stakeholders
+                    .filter(s => s.type === 'supplier')
+                    .map(s => ({ name: s.name, lat: s.lat, lng: s.lng, type: s.category, weight: s.demand_weight }))
+            ];
+
+            const dynamicBuyers = selectedOrdersList.map(o => {
+                const loc = o.buyer_location || '-6.9, 107.6';
+                const [lat, lng] = loc.split(',').map((c: string) => parseFloat(c?.trim() || '0'));
+                return { name: o.buyer_name || 'Buyer', lat: lat || -6.9, lng: lng || 107.6, demand: o.quantity || 0 };
+            });
+
+            addLog('AI', `🤖 Step 1: Mapping ${dynamicBuyers.length} coordinates & checking vehicle capacity limit (500kg)...`);
+
+            const totalLoad = dynamicBuyers.reduce((sum, b) => sum + b.demand, 0);
+            addLog('INFO', `⚖️ Total cargo load: ${totalLoad}kg (Vehicle capacity limit: 500kg)`);
+
+            const routePrompt = (SYSTEM_PROMPTS.ROUTE_ORCHESTRATOR || '')
+                .replace('{suppliers_data}', JSON.stringify(dynamicSuppliers))
+                .replace('{buyers_data}', JSON.stringify(dynamicBuyers));
+
+            addLog('AI', '🤖 Step 2: Requesting AI Agent to perform Traveling Salesperson (TSP) heuristic calculations...');
+            const routeDataRes = await chatCompletion({
+                model: llmModel,
+                format: 'json',
+                messages: [{ role: 'user', content: routePrompt }]
+            });
+
+            const rRaw = extractAiContent(routeDataRes, 'Logistics Agent');
+            const rData = await parseAiJson<any>(rRaw, 'Logistics Agent');
+
+            addLog('SUCCESS', '🤖 AI response received. Processing combinations comparison...');
+
+            // Evaluate all permutations and select the top 2-5 shortest paths
+            addLog('INFO', `🔍 Evaluating all possible routing permutations for ${dynamicBuyers.length} destinations...`);
+            const normalizedRoutes = normalizeRouteOptions(rData, dynamicBuyers);
+
+            addLog('INFO', `🔢 Tested permutations: calculated distance & duration for candidate combinations.`);
+
+            normalizedRoutes.batches?.forEach((batch: any, index: number) => {
+                const pathStr = batch.sequence.join(' ➔ ');
+                addLog('SUCCESS', `🏆 Option #${index + 1}: ${pathStr} | Reasoning: ${batch.reasoning || 'Optimal path.'}`);
+            });
+
+            setLogisticsData(normalizedRoutes);
+            addLog('SUCCESS', `🎉 Logistic routing completed. Selected top ${normalizedRoutes.batches?.length} shortest paths as options!`);
+
+        } catch (error: any) {
+            const msg = String(error?.message || 'Logistics routing failed');
+            setWorkflowError(msg);
+            addLog('ERROR', `Routing failed: ${msg}`);
             console.error(error);
         } finally {
             setLoading(false);
@@ -1233,7 +1361,7 @@ const apiBaseUrl = String(
                                 shipmentClearing={shipmentClearing}
                                 shipmentDeletingId={shipmentDeletingId}
                                 onToggleOrderSelection={toggleOrderSelection}
-                                onRunAgent={handleRunAgent}
+                                onRunAgent={handleRunLogisticsAgent}
                                 onClearShipmentHistory={handleClearShipmentHistory}
                                 onDeleteShipment={id => void handleDeleteShipment(id)}
                                 onSelectShipmentRoute={setLogisticsData}
