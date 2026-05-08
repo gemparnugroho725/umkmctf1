@@ -36,7 +36,7 @@ import { supabase } from '../../supabase';
 
 const SellerDashboardPage: React.FC = () => {
     const navigate = useNavigate();
-    const llmModel = import.meta.env.VITE_LLM_MODEL || 'ollama:qwen2.5-coder:1.5b';
+    const llmModel = import.meta.env.VITE_LLM_MODEL || 'google/gemini-2.0-flash-001';
     const llmIsOllama = llmModel.startsWith('ollama:') || llmModel.startsWith('ollama/');
 const apiBaseUrl = String(
     (import.meta as any).env?.VITE_API_BASE_URL || (typeof window !== 'undefined' ? window.location.origin : '') || ''

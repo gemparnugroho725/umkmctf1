@@ -95,7 +95,7 @@ const BuyerMarketplacePage: React.FC = () => {
         setAiMatching(true);
         try {
             const data = await chatCompletion({
-                model: import.meta.env.VITE_LLM_MODEL || 'ollama:qwen2.5-coder:1.5b',
+                model: import.meta.env.VITE_LLM_MODEL || 'google/gemini-2.0-flash-001',
                 format: 'json',
                 messages: [
                     {
