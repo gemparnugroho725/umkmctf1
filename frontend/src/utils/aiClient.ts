@@ -96,7 +96,7 @@ export const chatCompletion = async (payload: {
                     Authorization: `Bearer ${OPENROUTER_API_KEY}`,
                     'Content-Type': 'application/json',
                     'HTTP-Referer': typeof window !== 'undefined' ? window.location.origin : undefined,
-                    'X-Title': 'DirectRoute AI (frontend-only)'
+                    'X-Title': 'Juragan AI (frontend-only)'
                 }
             }
         );

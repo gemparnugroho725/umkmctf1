@@ -42,11 +42,11 @@ const BuyerSidebar: React.FC<BuyerSidebarProps> = ({
             <div className="p-6 flex items-center gap-3 mb-8 cursor-pointer" onClick={onLogoClick}>
                 <img
                     src="/logo.jpg"
-                    alt="DirectRoute AI"
+                    alt="Juragan AI"
                     className="w-10 h-10 rounded-xl object-contain bg-white border border-slate-200"
                 />
                 <span className="text-xl font-black text-slate-900 tracking-tight">
-                    DirectRoute <span className="text-emerald-500">AI</span>
+                    Juragan <span className="text-emerald-500">AI</span>
                 </span>
             </div>
 

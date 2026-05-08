@@ -77,9 +77,9 @@ const Login: React.FC = () => {
             <div className="w-full max-w-md relative z-10 animate-slide-up">
                 <div className="text-center mb-8">
                     <div className="inline-flex items-center justify-center mb-4 shadow-xl shadow-emerald-200 rounded-2xl bg-white border border-slate-200 p-2.5">
-                        <img src="/logo.jpg" alt="DirectRoute AI" className="w-12 h-12 object-contain" />
+                        <img src="/logo.jpg" alt="Juragan AI" className="w-12 h-12 object-contain" />
                     </div>
-                    <h1 className="text-3xl font-black text-slate-900 tracking-tight">DirectRoute <span className="text-emerald-500">AI</span></h1>
+                    <h1 className="text-3xl font-black text-slate-900 tracking-tight">Juragan <span className="text-emerald-500">AI</span></h1>
                     <p className="text-slate-500 text-sm mt-2">Agentic Supply Chain Platform for Modern UMKM</p>
                 </div>
 
@@ -198,7 +198,7 @@ const Login: React.FC = () => {
                 </GlassCard>
 
                 <p className="text-center text-slate-400 text-[10px] mt-8 uppercase tracking-widest font-bold">
-                    DirectRoute AI Security • Supabase Cloud Verified
+                    Juragan AI Security • Supabase Cloud Verified
                 </p>
             </div>
         </div>

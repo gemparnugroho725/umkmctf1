@@ -136,7 +136,7 @@ const SellerHeroCard: React.FC<SellerHeroCardProps> = ({
                                 className="px-8 py-3 bg-white text-emerald-900 rounded-xl font-black text-sm flex items-center gap-2 hover:bg-emerald-50 transition-all active:scale-95 disabled:opacity-50"
                             >
                                 <Play size={18} fill="currentColor" />
-                                {loading ? 'AI AGENT RUNNING...' : 'ANALISIS DIRECTROUTE AI'}
+                                {loading ? 'AI AGENT RUNNING...' : 'ANALISIS JURAGAN AI'}
                             </button>
 
                             {currentStep === 3 && (

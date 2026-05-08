@@ -1248,7 +1248,7 @@ const apiBaseUrl = String(
         const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(logs, null, 2));
         const downloadAnchorNode = document.createElement('a');
         downloadAnchorNode.setAttribute('href', dataStr);
-        downloadAnchorNode.setAttribute('download', `directroute-log-${Date.now()}.json`);
+        downloadAnchorNode.setAttribute('download', `juragan-log-${Date.now()}.json`);
         document.body.appendChild(downloadAnchorNode);
         downloadAnchorNode.click();
         downloadAnchorNode.remove();
@@ -1458,7 +1458,7 @@ const apiBaseUrl = String(
                 </div>
 
                 <footer className="mt-auto p-6 text-center text-slate-400 text-xs">
-                    &copy; 2026 DirectRoute AI – Strategic & Secure Agentic Supply Chain Platform.
+                    &copy; 2026 Juragan AI – Strategic & Secure Agentic Supply Chain Platform.
                 </footer>
             </main>
 

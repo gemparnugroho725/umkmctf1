@@ -108,7 +108,7 @@ const RealIndonesiaMap: React.FC = () => {
                     <div style="font-family: sans-serif; padding: 4px; min-width: 170px;">
                         <b style="color: #0f172a; font-size: 13px; display: block; margin-bottom: 2px;">${pt.name}</b>
                         <p style="color: #475569; font-size: 11.5px; margin: 0 0 6px 0; line-height: 1.4;">${pt.desc}</p>
-                        <span style="display: inline-block; font-size: 9px; background: #ecfdf5; color: #047857; padding: 2.5px 8px; border-radius: 9999px; font-weight: bold; border: 1px solid #a7f3d0;">DirectRoute Connected</span>
+                        <span style="display: inline-block; font-size: 9px; background: #ecfdf5; color: #047857; padding: 2.5px 8px; border-radius: 9999px; font-weight: bold; border: 1px solid #a7f3d0;">Juragan Connected</span>
                     </div>
                 `);
             });
@@ -184,7 +184,7 @@ const LandingPage: React.FC = () => {
 
     const testimonials = [
         {
-            quote: "Semenjak menggunakan DirectRoute AI, hasil panen cabai saya dikirim langsung ke jaringan restoran besar di Semarang. Harga jual kami naik 2.4 kali lipat dibanding lewat tengkulak lokal!",
+            quote: "Semenjak menggunakan Juragan AI, hasil panen cabai saya dikirim langsung ke jaringan restoran besar di Semarang. Harga jual kami naik 2.4 kali lipat dibanding lewat tengkulak lokal!",
             author: "Pak Budi Sutrisno",
             role: "Petani Cabai & Ketua Gapoktan",
             region: "Boyolali, Jawa Tengah",
@@ -214,7 +214,7 @@ const LandingPage: React.FC = () => {
 
     const faqs = [
         {
-            q: "Bagaimana cara DirectRoute AI memotong rantai distribusi tengkulak?",
+            q: "Bagaimana cara Juragan AI memotong rantai distribusi tengkulak?",
             a: "Sistem kami menghubungkan produsen tani dan UMKM secara langsung ke pembeli skala besar (hotel, restoran, katering, ritel) melalui algoritma optimasi pasar cerdas. Hal ini mengeliminasi biaya marjin perantara gelap, meningkatkan profit tani secara signifikan, sekaligus memberikan harga terbaik bagi pembeli."
         },
         {
@@ -223,7 +223,7 @@ const LandingPage: React.FC = () => {
         },
         {
             q: "Bagaimana kecerdasan buatan (AI) menentukan harga pangan secara real-time?",
-            a: "AI DirectRoute memindai dan menganalisis database harga pangan nasional, pasar induk regional, serta tren pasokan pasar ritel setiap detiknya. Dengan memperhitungkan faktor cuaca, biaya logistik aktual, dan perkiraan demand, AI kami merumuskan harga rekomendasi yang adil, stabil, serta transparan bagi kedua belah pihak."
+            a: "Juragan AI memindai dan menganalisis database harga pangan nasional, pasar induk regional, serta tren pasokan pasar ritel setiap detiknya. Dengan memperhitungkan faktor cuaca, biaya logistik aktual, dan perkiraan demand, AI kami merumuskan harga rekomendasi yang adil, stabil, serta transparan bagi kedua belah pihak."
         },
         {
             q: "Bagaimana rute pengiriman dan logistik bersama diatur?",
@@ -258,12 +258,12 @@ const LandingPage: React.FC = () => {
                             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-forest-700 p-[1.5px] shadow-md shadow-emerald-600/10 flex items-center justify-center">
                                 <img
                                     src="/logo.jpg"
-                                    alt="DirectRoute AI"
+                                    alt="Juragan AI"
                                     className="w-full h-full rounded-[10px] object-contain bg-white"
                                 />
                             </div>
                             <span className="text-xl font-black tracking-tight text-slate-900">
-                                DirectRoute <span className="text-emerald-600">AI</span>
+                                Juragan <span className="text-emerald-600">AI</span>
                             </span>
                         </div>
 
@@ -431,7 +431,7 @@ const LandingPage: React.FC = () => {
                                 <div className="mt-4 flex items-center justify-between px-2">
                                     <div className="text-sm font-black text-slate-800 flex items-center gap-2">
                                         <Activity size={16} className="text-emerald-500 animate-pulse" />
-                                        <span>DirectRoute Logistics Node AI</span>
+                                        <span>Juragan Logistics Node AI</span>
                                     </div>
                                     <span className="text-[10px] font-black text-emerald-800 bg-emerald-50 border border-emerald-100 rounded-full px-3 py-1">
                                         Realtime Optimization
@@ -522,7 +522,7 @@ const LandingPage: React.FC = () => {
                                 Alur Kerja Agentic AI
                             </div>
                             <h2 className="text-4xl lg:text-5xl font-extrabold tracking-tight text-slate-900 leading-tight">
-                                Fitur Pintar <span className="bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">DirectRoute AI</span>
+                                Fitur Pintar <span className="bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">Juragan AI</span>
                             </h2>
                             <p className="text-slate-500 font-medium text-lg">
                                 Dirancang khusus untuk memodernisasi rantai pasok dengan kepintaran teknologi AI terbaru.
@@ -641,7 +641,7 @@ const LandingPage: React.FC = () => {
                                 Workflow Cerdas
                             </span>
                             <h2 className="text-3xl lg:text-4xl font-extrabold text-slate-900">
-                                Bagaimana DirectRoute AI Bekerja?
+                                Bagaimana Juragan AI Bekerja?
                             </h2>
                             <p className="text-slate-500 font-medium">
                                 Proses integrasi cepat dan efisien yang menghubungkan ladang tani langsung ke meja saji.
@@ -731,7 +731,7 @@ const LandingPage: React.FC = () => {
                                     Teknologi AI untuk Kedaulatan & Pemerataan Pangan
                                 </h2>
                                 <p className="text-slate-600 leading-relaxed text-sm">
-                                    Misi utama DirectRoute AI bukan hanya sekadar optimalisasi bisnis, tetapi menyalurkan keadilan ekonomi bagi petani pejuang pangan Indonesia. Dengan memutus sistem rantai logistik monopoli, kita mewujudkan pemerataan ekonomi digital dari desa hingga perkotaan.
+                                    Misi utama Juragan AI bukan hanya sekadar optimalisasi bisnis, tetapi menyalurkan keadilan ekonomi bagi petani pejuang pangan Indonesia. Dengan memutus sistem rantai logistik monopoli, kita mewujudkan pemerataan ekonomi digital dari desa hingga perkotaan.
                                 </p>
 
                                 <div className="space-y-4 pt-4">
@@ -940,10 +940,10 @@ const LandingPage: React.FC = () => {
                                 Tanya Jawab Umum
                             </span>
                             <h2 className="text-3xl font-extrabold text-slate-900">
-                                FAQ DirectRoute AI
+                                FAQ Juragan AI
                             </h2>
                             <p className="text-slate-500 font-medium text-sm">
-                                Temukan jawaban cepat mengenai keunggulan, penggunaan, dan teknologi logistik DirectRoute.
+                                Temukan jawaban cepat mengenai keunggulan, penggunaan, dan teknologi logistik Juragan.
                             </p>
                         </div>
 
@@ -1039,11 +1039,11 @@ const LandingPage: React.FC = () => {
                                     <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-500 to-emerald-700 p-[1px] shadow-sm flex-shrink-0">
                                         <img
                                             src="/logo.jpg"
-                                            alt="DirectRoute AI"
+                                            alt="Juragan AI"
                                             className="w-full h-full rounded-[7px] object-contain bg-white"
                                         />
                                     </div>
-                                    <span className="text-lg font-black text-slate-900">DirectRoute AI</span>
+                                    <span className="text-lg font-black text-slate-900">Juragan AI</span>
                                 </div>
                                 <p className="text-xs text-slate-500 leading-relaxed max-w-xs">
                                     Platform teknologi kecerdasan buatan pionir yang menghubungkan produsen pertanian lokal secara langsung ke pasar nasional.
@@ -1079,7 +1079,7 @@ const LandingPage: React.FC = () => {
                             <div className="space-y-3">
                                 <h5 className="font-extrabold text-xs text-slate-400 uppercase tracking-widest">Kontak & Media</h5>
                                 <ul className="space-y-2 text-xs font-semibold text-slate-600">
-                                    <li><span className="text-slate-500">support@directroute.ai</span></li>
+                                    <li><span className="text-slate-500">support@juragan.ai</span></li>
                                     <li><span className="text-slate-500">+62 821-2345-6789</span></li>
                                     <li><span className="text-slate-500">DKI Jakarta, Indonesia</span></li>
                                 </ul>
@@ -1089,7 +1089,7 @@ const LandingPage: React.FC = () => {
 
                         {/* Lower row: copyright, standards */}
                         <div className="pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs font-semibold text-slate-400">
-                            <p>&copy; 2026 DirectRoute AI. Seluruh hak cipta dilindungi undang-undang.</p>
+                            <p>&copy; 2026 Juragan AI. Seluruh hak cipta dilindungi undang-undang.</p>
                             <div className="flex items-center gap-2 bg-slate-50 border border-slate-150 px-3.5 py-1.5 rounded-full shadow-inner">
                                 <Users size={14} className="text-emerald-500" />
                                 <span>Keadilan Sosial Bagi Seluruh Petani Indonesia</span>
