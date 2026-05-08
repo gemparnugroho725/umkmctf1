@@ -40,7 +40,7 @@ const main = async () => {
   const username = args.username || 'Admin';
 
   // 1) Create Auth user via Admin API
-  const authAdminUrl = `${supabaseUrl.replace(/\\/$/, '')}/auth/v1/admin/users`;
+  const authAdminUrl = `${supabaseUrl.replace(/\/$/, '')}/auth/v1/admin/users`;
   const createRes = await axios.post(
     authAdminUrl,
     {
@@ -68,7 +68,7 @@ const main = async () => {
   }
 
   // 2) Upsert public.profiles role=admin via PostgREST (service role bypasses RLS)
-  const profilesUrl = `${supabaseUrl.replace(/\\/$/, '')}/rest/v1/profiles?on_conflict=id`;
+  const profilesUrl = `${supabaseUrl.replace(/\/$/, '')}/rest/v1/profiles?on_conflict=id`;
   await axios.post(
     profilesUrl,
     [{ id: userId, username, role: 'admin', location: '' }],
