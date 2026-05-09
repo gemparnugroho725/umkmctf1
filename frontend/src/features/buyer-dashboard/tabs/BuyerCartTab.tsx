@@ -7,6 +7,7 @@ import { parseCoordinatesFromInput } from '../../../utils/location';
 import { haversineKm } from '../../../utils/geo';
 import { useSavedCarts } from '../../saved-carts/useSavedCarts';
 import { computeCouponDiscount, useCouponValidator } from '../../coupons/useCoupons';
+import { calculateShippingCost } from '../../logistics/pricing';
 
 interface BuyerCartTabProps {
     products: Product[];
@@ -74,15 +75,39 @@ const BuyerCartTab: React.FC<BuyerCartTabProps> = ({
     const shippingEstimates = useMemo(() => {
         const addrCoords = selectedAddress?.location ? parseCoordinatesFromInput(selectedAddress.location) : null;
         if (!addrCoords) return [];
-        const perSeller = new Map<string, { sellerId: string; to: string; km: number | null; cost: number | null }>();
+        
+        const perSeller = new Map<string, { sellerId: string; to: string; km: number | null; cost: number | null; totalWeight: number }>();
         for (const item of cart) {
-            if (!perSeller.has(item.seller_id)) {
+            const current = perSeller.get(item.seller_id) || { sellerId: item.seller_id, to: item.location || '-', km: null, cost: null, totalWeight: 0 };
+            current.totalWeight += Number(item.quantity || 1);
+            
+            if (current.km === null) {
                 const toCoords = item.location ? parseCoordinatesFromInput(item.location) : null;
-                const km = toCoords ? haversineKm(addrCoords, toCoords) : null;
-                const cost = km != null ? Math.round(km * 3000) : null;
-                perSeller.set(item.seller_id, { sellerId: item.seller_id, to: item.location || '-', km, cost });
+                current.km = toCoords ? haversineKm(addrCoords, toCoords) : null;
+            }
+            perSeller.set(item.seller_id, current);
+        }
+
+        for (const data of perSeller.values()) {
+            if (data.km != null) {
+                // Dynamic vehicle determination based on bulk weight
+                let vehicleType: 'motor' | 'pickup' | 'truck' = 'motor';
+                if (data.totalWeight > 250) {
+                    vehicleType = 'truck';
+                } else if (data.totalWeight > 30) {
+                    vehicleType = 'pickup';
+                }
+
+                const estimate = calculateShippingCost({
+                    vehicleType,
+                    distanceKm: data.km,
+                    durationMins: data.km * 1.5, // estimate 40km/h average
+                    loadKg: data.totalWeight
+                });
+                data.cost = estimate.total;
             }
         }
+        
         return [...perSeller.values()];
     }, [cart, selectedAddress?.location]);
 

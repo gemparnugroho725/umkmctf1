@@ -35,8 +35,14 @@ const BuyerMarketplacePage: React.FC = () => {
     const [cancelLoadingId, setCancelLoadingId] = useState<string | null>(null);
     const [orderHistoryClearing, setOrderHistoryClearing] = useState(false);
     const [locationInput, setLocationInput] = useState(user?.location || '');
+    const [phone, setPhone] = useState(user?.phone || '');
     const [locationSaving, setLocationSaving] = useState(false);
     const toast = useToastStack();
+
+    useEffect(() => {
+        setLocationInput(user?.location || '');
+        setPhone(user?.phone || '');
+    }, [user?.id, user?.location, user?.phone]);
 
     useOrderRealtimeToasts(user, toast.push);
     useDisputeRealtimeToasts(user, toast.push);
@@ -156,7 +162,7 @@ const BuyerMarketplacePage: React.FC = () => {
     const handleUpdateLocation = async () => {
         const raw = locationInput.trim();
         if (!raw) {
-            alert('Lokasi tidak boleh kosong.');
+            alert('Lokasi pengiriman tidak boleh kosong.');
             return;
         }
 
@@ -166,11 +172,14 @@ const BuyerMarketplacePage: React.FC = () => {
             const normalizedLocation = parsed
                 ? `${parsed.lat}, ${parsed.lng}`
                 : (await geocodeLocation(raw, import.meta.env.VITE_GOOGLE_MAPS_API_KEY)).coords;
-            await updateProfile({ location: normalizedLocation });
+            await updateProfile({ 
+                location: normalizedLocation,
+                phone: phone.trim() || null
+            });
             setLocationInput(normalizedLocation);
-            alert('Lokasi berhasil diupdate di database!');
+            alert('Pengaturan profil berhasil diperbarui!');
         } catch (err: any) {
-            alert(`Gagal update lokasi: ${err?.message || 'Terjadi kesalahan.'}`);
+            alert(`Gagal memperbarui pengaturan: ${err?.message || 'Terjadi kesalahan.'}`);
         } finally {
             setLocationSaving(false);
         }
@@ -255,8 +264,10 @@ const BuyerMarketplacePage: React.FC = () => {
                     {activeTab === 'settings' && (
                         <BuyerSettingsTab
                             locationInput={locationInput}
+                            phone={phone}
                             locationSaving={locationSaving}
                             onLocationInputChange={setLocationInput}
+                            onPhoneChange={setPhone}
                             onMapsLinkChange={val => {
                                 if (val.includes('maps') || val.includes('goo.gl')) {
                                     setLocationInput(val);

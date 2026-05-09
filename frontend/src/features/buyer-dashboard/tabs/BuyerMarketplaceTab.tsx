@@ -1,5 +1,6 @@
-﻿import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Columns2, Heart, HeartOff, MapPin, Search, ShoppingCart, Sparkles, Zap } from 'lucide-react';
+import { supabase } from '../../../supabase';
 import GlassCard from '../../../components/GlassCard';
 import type { Product } from '../../../types';
 import { useAuth } from '../../../context/AuthContext';
@@ -46,6 +47,48 @@ const BuyerMarketplaceTab: React.FC<BuyerMarketplaceTabProps> = ({
     const [qtyById, setQtyById] = useState<Record<string, number>>({});
     const [compareIds, setCompareIds] = useState<Set<string>>(new Set());
     const [compareOpen, setCompareOpen] = useState(false);
+
+    const handleTanyaStokWA = async (product: Product) => {
+        try {
+            // Fetch seller's profile
+            const { data, error } = await supabase
+                .from('profiles')
+                .select('username, phone')
+                .eq('id', product.seller_id)
+                .single();
+
+            let sellerPhone = '';
+            let sellerName = product.umkm_name || 'Juragan Seller';
+
+            if (!error && data) {
+                sellerPhone = data.phone || '';
+                sellerName = data.username || sellerName;
+            }
+
+            // Fallback to local storage
+            if (!sellerPhone) {
+                sellerPhone = localStorage.getItem('juragan_ai_phone_' + product.seller_id) || '';
+            }
+
+            // Fallback to default
+            if (!sellerPhone) {
+                sellerPhone = '6282123456789';
+            }
+
+            // Sanitize phone number
+            let cleanPhone = sellerPhone.replace(/[^0-9]/g, '');
+            if (cleanPhone.startsWith('0')) {
+                cleanPhone = '62' + cleanPhone.slice(1);
+            }
+
+            const message = `Halo Juragan ${sellerName}, saya tertarik dengan komoditas ${product.commodity}. Apakah masih ada stok lebih selain ${product.stock}kg yang tertera di aplikasi Juragan AI?`;
+            
+            window.open(`https://wa.me/${cleanPhone}?text=${encodeURIComponent(message)}`, '_blank');
+        } catch (err) {
+            console.error('Gagal menghubungi seller via WA:', err);
+            alert('Gagal membuka WhatsApp. Silakan coba lagi.');
+        }
+    };
 
     const base = filteredProducts || products;
 
@@ -463,7 +506,7 @@ const BuyerMarketplaceTab: React.FC<BuyerMarketplaceTabProps> = ({
                                 {product.stock > 0 ? (
                                     <button
                                         onClick={() => onAddToCart(product, getQty(product))}
-                                        className="w-full py-2.5 rounded-2xl bg-emerald-600 text-white text-sm font-black hover:bg-emerald-700 transition-all active:scale-[0.99]"
+                                        className="w-full py-2.5 rounded-2xl bg-emerald-600 text-white text-sm font-black hover:bg-emerald-700 transition-all active:scale-[0.99] mb-2"
                                         title="Tambah ke keranjang"
                                     >
                                         <ShoppingCart size={18} className="inline -mt-0.5 mr-2" />
@@ -472,13 +515,24 @@ const BuyerMarketplaceTab: React.FC<BuyerMarketplaceTabProps> = ({
                                 ) : (
                                     <button
                                         disabled
-                                        className="w-full py-2.5 rounded-2xl bg-slate-100 text-slate-300 text-sm font-black cursor-not-allowed"
+                                        className="w-full py-2.5 rounded-2xl bg-slate-100 text-slate-300 text-sm font-black cursor-not-allowed mb-2"
                                         title="Stok habis"
                                     >
                                         <ShoppingCart size={18} className="inline -mt-0.5 mr-2" />
                                         Stok habis
                                     </button>
                                 )}
+
+                                <button
+                                    onClick={() => void handleTanyaStokWA(product)}
+                                    className="w-full py-2 bg-emerald-50 text-emerald-600 border border-emerald-100 rounded-2xl text-xs font-bold hover:bg-emerald-100 transition-all active:scale-[0.99] flex items-center justify-center gap-2"
+                                    title="Tanya Stok Lebih via WhatsApp"
+                                >
+                                    <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
+                                        <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.503-5.714-1.458L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.725 1.45 5.513 0 10.002-4.491 10.005-10.011.002-2.673-1.03-5.187-2.908-7.07C16.492 1.639 13.992.597 11.314.596c-5.474 0-9.927 4.453-9.931 9.93-.001 1.74.452 3.44 1.312 4.93L1.722 21.6l6.34-1.66c1.5.82 2.94 1.21 4.59 1.21z" />
+                                    </svg>
+                                    Tanya Stok Lebih (WA)
+                                </button>
                             </div>
                         </div>
                     </div>

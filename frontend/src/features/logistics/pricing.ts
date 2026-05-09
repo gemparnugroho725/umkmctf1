@@ -46,7 +46,22 @@ export const calculateShippingCost = (input: {
     const load_kg = Math.max(0, safeNumber(input.loadKg));
 
     const base_fee = Math.max(0, safeNumber(rate.baseFee));
-    const distance_fee = Math.round(Math.max(0, safeNumber(rate.perKm)) * distance_km);
+    
+    // Progressive per-km rate scaling:
+    // - <= 20 km: 100% of standard perKm rate
+    // - 20 to 100 km: 50% of standard perKm rate (intercity discount)
+    // - Above 100 km: 20% of standard perKm rate (long-haul discount)
+    const rawPerKm = safeNumber(rate.perKm);
+    let distance_fee = 0;
+    if (distance_km <= 20) {
+        distance_fee = distance_km * rawPerKm;
+    } else if (distance_km <= 100) {
+        distance_fee = (20 * rawPerKm) + (distance_km - 20) * (rawPerKm * 0.5);
+    } else {
+        distance_fee = (20 * rawPerKm) + (80 * rawPerKm * 0.5) + (distance_km - 100) * (rawPerKm * 0.2);
+    }
+    distance_fee = Math.round(distance_fee);
+
     const weight_fee = Math.round(Math.max(0, safeNumber(rate.perKg)) * load_kg);
     const total = Math.max(0, Math.round(base_fee + distance_fee + weight_fee));
 

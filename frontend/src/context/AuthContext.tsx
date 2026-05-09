@@ -41,6 +41,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             username: session.user.user_metadata?.username || 'User',
             role: session.user.user_metadata?.role || 'buyer',
             location: session.user.user_metadata?.location || '',
+            phone: session.user.user_metadata?.phone || localStorage.getItem('juragan_ai_phone_' + session.user.id) || '',
             business_name: session.user.user_metadata?.business_name || null,
             business_address: session.user.user_metadata?.business_address || null,
             tax_id: session.user.user_metadata?.tax_id || null,
@@ -66,6 +67,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                     username: data.username,
                     role: data.role,
                     location: data.location || '',
+                    phone: data.phone || localStorage.getItem('juragan_ai_phone_' + data.id) || '',
                     business_name: data.business_name || null,
                     business_address: data.business_address || null,
                     tax_id: data.tax_id || null,
@@ -138,19 +140,27 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         if (authError) throw authError;
 
         if (authData.user) {
-            // Upsert profile (compatible with DB trigger yang auto-create profile)
-            const { error: profileError } = await supabase.from('profiles').upsert(
-                [
-                    {
-                        id: authData.user.id,
-                        username,
-                        role,
-                        location: ''
+            // Non-blocking upsert
+            void (async () => {
+                try {
+                    const { error: profileError } = await supabase.from('profiles').upsert(
+                        [
+                            {
+                                id: authData.user!.id,
+                                username,
+                                role,
+                                location: ''
+                            }
+                        ],
+                        { onConflict: 'id' }
+                    );
+                    if (profileError) {
+                        console.warn('Profile upsert warning (handled by DB trigger):', profileError.message);
                     }
-                ],
-                { onConflict: 'id' }
-            );
-            if (profileError) throw profileError;
+                } catch (err) {
+                    console.warn('Profile manual upsert failed (trigger fallback will handle it):', err);
+                }
+            })();
         }
     };
 
@@ -158,12 +168,48 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         if (!user) {
             throw new Error('Sesi login tidak ditemukan.');
         }
-        const { error } = await supabase
-            .from('profiles')
-            .update(updates)
-            .eq('id', user.id);
-        
-        if (error) throw error;
+
+        // Try saving to Supabase profiles table
+        let hasPhoneError = false;
+        try {
+            const { error } = await supabase
+                .from('profiles')
+                .update(updates)
+                .eq('id', user.id);
+            if (error) {
+                // If it fails because of missing phone column, we catch it and set flag
+                if (error.message.includes('phone') || error.message.includes('column') || error.code === 'PGRST204') {
+                    hasPhoneError = true;
+                } else {
+                    throw error;
+                }
+            }
+        } catch (err) {
+            console.warn('DB profile update failed, will use fallback:', err);
+            hasPhoneError = true;
+        }
+
+        // Save phone to localStorage if there's any phone property in updates
+        if (updates.phone !== undefined) {
+            if (updates.phone) {
+                localStorage.setItem('juragan_ai_phone_' + user.id, updates.phone);
+            } else {
+                localStorage.removeItem('juragan_ai_phone_' + user.id);
+            }
+        }
+
+        // If phone column didn't exist in Supabase table, update remaining fields in Supabase
+        if (hasPhoneError) {
+            const dbUpdates = { ...updates };
+            delete dbUpdates.phone;
+            if (Object.keys(dbUpdates).length > 0) {
+                const { error: secondTryError } = await supabase
+                    .from('profiles')
+                    .update(dbUpdates)
+                    .eq('id', user.id);
+                if (secondTryError) throw secondTryError;
+            }
+        }
 
         const nextUser = { ...user, ...updates };
         const { error: updateUserError } = await supabase.auth.updateUser({
@@ -171,12 +217,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 username: nextUser.username,
                 role: nextUser.role,
                 location: nextUser.location || '',
+                phone: nextUser.phone || '',
                 business_name: (nextUser as any).business_name ?? null,
                 business_address: (nextUser as any).business_address ?? null,
                 tax_id: (nextUser as any).tax_id ?? null,
                 is_verified: (nextUser as any).is_verified ?? null
             }
         });
+
         if (updateUserError) throw updateUserError;
 
         const { error: refreshError } = await supabase.auth.refreshSession();

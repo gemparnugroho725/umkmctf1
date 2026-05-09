@@ -80,6 +80,7 @@ const apiBaseUrl = String(
     const [businessName, setBusinessName] = useState<string>((user as any)?.business_name || '');
     const [businessAddress, setBusinessAddress] = useState<string>((user as any)?.business_address || '');
     const [taxId, setTaxId] = useState<string>((user as any)?.tax_id || '');
+    const [phone, setPhone] = useState<string>(user?.phone || '');
 
     // AI Results State
     const [priceData, setPriceData] = useState<any>(null);
@@ -141,7 +142,8 @@ const apiBaseUrl = String(
         setBusinessName(String((user as any)?.business_name || ''));
         setBusinessAddress(String((user as any)?.business_address || ''));
         setTaxId(String((user as any)?.tax_id || ''));
-    }, [user?.id]);
+        setPhone(String(user?.phone || ''));
+    }, [user?.id, user?.phone]);
 
     const addLog = (level: LogEntry['level'], message: string, payload?: any) => {
         const timestamp = new Date().toLocaleTimeString();
@@ -192,6 +194,7 @@ const apiBaseUrl = String(
 
             await updateProfile({
                 location: normalizedLocation,
+                phone: phone.trim() || null,
                 business_name: businessName.trim() || null,
                 business_address: businessAddress.trim() || null,
                 tax_id: taxId.trim() || null
@@ -1433,6 +1436,7 @@ const apiBaseUrl = String(
                         <SellerSettingsTab
                             user={user}
                             location={location}
+                            phone={phone}
                             businessName={businessName}
                             businessAddress={businessAddress}
                             taxId={taxId}
@@ -1443,6 +1447,7 @@ const apiBaseUrl = String(
                                 }
                             }}
                             onLocationChange={setLocation}
+                            onPhoneChange={setPhone}
                             onBusinessNameChange={setBusinessName}
                             onBusinessAddressChange={setBusinessAddress}
                             onTaxIdChange={setTaxId}

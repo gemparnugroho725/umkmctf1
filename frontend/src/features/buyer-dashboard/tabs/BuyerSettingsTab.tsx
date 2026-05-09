@@ -5,8 +5,10 @@ import AddressesManager from '../../addresses/AddressesManager';
 
 interface BuyerSettingsTabProps {
     locationInput: string;
+    phone: string;
     locationSaving: boolean;
     onLocationInputChange: (value: string) => void;
+    onPhoneChange: (value: string) => void;
     onMapsLinkChange: (value: string) => void;
     onLookup: () => void;
     onSave: () => void;
@@ -14,8 +16,10 @@ interface BuyerSettingsTabProps {
 
 const BuyerSettingsTab: React.FC<BuyerSettingsTabProps> = ({
     locationInput,
+    phone,
     locationSaving,
     onLocationInputChange,
+    onPhoneChange,
     onMapsLinkChange,
     onLookup,
     onSave
@@ -24,6 +28,20 @@ const BuyerSettingsTab: React.FC<BuyerSettingsTabProps> = ({
         <div className="max-w-2xl mx-auto space-y-8 animate-slide-up">
             <h2 className="text-2xl font-black text-slate-900">Settings</h2>
             <GlassCard className="p-8 space-y-8">
+                <div className="space-y-4">
+                    <label className="text-sm font-bold text-slate-900">No. WhatsApp / HP</label>
+                    <input
+                        type="text"
+                        value={phone}
+                        onChange={e => onPhoneChange(e.target.value)}
+                        placeholder="Contoh: 628123456789"
+                        className="w-full bg-slate-50 border border-slate-100 rounded-xl px-4 py-3.5 text-sm text-slate-700 focus:bg-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
+                    />
+                    <p className="text-[10px] text-slate-400">
+                        Digunakan oleh Seller untuk mengirimkan penawaran khusus via WhatsApp. Mulai dengan kode negara (contoh: 628...).
+                    </p>
+                </div>
+
                 <div className="space-y-4">
                     <label className="text-sm font-bold text-slate-900">Link Google Maps</label>
                     <div className="relative">

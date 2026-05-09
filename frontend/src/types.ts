@@ -40,6 +40,7 @@ export interface User {
     username: string;
     role: 'buyer' | 'seller' | 'admin';
     location?: string;
+    phone?: string | null;
     business_name?: string | null;
     business_address?: string | null;
     tax_id?: string | null;

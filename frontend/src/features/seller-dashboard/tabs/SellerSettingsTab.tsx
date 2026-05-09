@@ -10,12 +10,14 @@ import SellerVerificationCard from '../features/SellerVerificationCard';
 interface SellerSettingsTabProps {
     user: User | null;
     location: string;
+    phone: string;
     businessName: string;
     businessAddress: string;
     taxId: string;
     locationSaving: boolean;
     onMapsLinkChange: (value: string) => void;
     onLocationChange: (value: string) => void;
+    onPhoneChange: (value: string) => void;
     onBusinessNameChange: (value: string) => void;
     onBusinessAddressChange: (value: string) => void;
     onTaxIdChange: (value: string) => void;
@@ -26,12 +28,14 @@ interface SellerSettingsTabProps {
 const SellerSettingsTab: React.FC<SellerSettingsTabProps> = ({
     user,
     location,
+    phone,
     businessName,
     businessAddress,
     taxId,
     locationSaving,
     onMapsLinkChange,
     onLocationChange,
+    onPhoneChange,
     onBusinessNameChange,
     onBusinessAddressChange,
     onTaxIdChange,
@@ -59,6 +63,19 @@ const SellerSettingsTab: React.FC<SellerSettingsTabProps> = ({
                             disabled
                             className="w-full bg-slate-50 border-slate-100 rounded-xl px-4 py-3 text-sm text-slate-400 outline-none cursor-not-allowed"
                         />
+                    </div>
+
+                    <div className="space-y-2">
+                        <label className="text-sm font-bold text-slate-700">No. WhatsApp / HP</label>
+                        <input
+                            value={phone}
+                            onChange={e => onPhoneChange(e.target.value)}
+                            placeholder="Contoh: 6282123456789"
+                            className="w-full bg-slate-50 border border-slate-100 rounded-xl px-4 py-3 text-sm focus:bg-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all outline-none"
+                        />
+                        <p className="text-[10px] text-slate-400">
+                            Digunakan oleh Buyer untuk menghubungi Anda via WhatsApp. Mulai dengan kode negara (contoh: 628...).
+                        </p>
                     </div>
 
                     <div className="space-y-2">
